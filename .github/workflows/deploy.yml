@@ -1,4 +1,4 @@
-name: Deploy Muninn
+name: Deploy Mimir
 
 on:
   push:
@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Log in to Registry
         uses: docker/login-action@v3
@@ -27,4 +25,7 @@ jobs:
           OBSIDIAN_VAULT_PATH: ${{ vars.OBSIDIAN_VAULT_PATH }}
           REGISTRY_PREFIX: ${{ vars.REGISTRY_PREFIX }}
         run: |
-          ./scripts/deploy.sh "muninn" docker-compose.yml
+          curl -fsSL https://raw.githubusercontent.com/yggdrasil-lab/yggdrasil-os/main/deploy/deploy.sh -o /tmp/deploy.sh
+          chmod +x /tmp/deploy.sh
+          /tmp/deploy.sh "mimir" docker-compose.yml
+

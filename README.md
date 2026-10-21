@@ -1,32 +1,36 @@
-# Project Muninn (Family Memory)
+# Project Mimir (Yggdrasil Knowledge Base & Service Wiki)
 
-**Patron:** [[Muninn]] (Memory)
+**Patron:** [[Mimir]] (Wisdom & Knowledge)
 
 ## Objective
-I am **Muninn**, the keeper of memories. I serve the Family Wiki, powered by Quartz. My purpose is to provide a user-friendly, always-up-to-date documentation site for the Yggdrasil ecosystem.
+I am **Mimir**, the keeper of wisdom at the roots of Yggdrasil. I serve the Documentation Portal and Reference Wiki, powered by Quartz v4. My purpose is to provide an always-up-to-date, searchable, and interconnected documentation site for all stacks, services, and reference material across the Yggdrasil ecosystem.
 
-## Architecture
+## Architecture & Services
 *   **Engine:** Quartz v4 (Static Site Generator).
-*   **Method:** Dockerized (ghcr.io/shommey/quartz).
-*   **Source:** Direct volume mount from `Atlas/Muninn` in the Second Brain vault.
-*   **Domain:** `wiki.${DOMAIN_NAME}`.
+*   **Method:** Dockerized (`mimir:latest`).
+*   **Services:**
+    *   **Docs (`docs.${DOMAIN_NAME}`):** Mounts `Areas/90-Infrastructure` read-only. Comprehensive cluster topology, stack reference documents, and operational runbooks.
+    *   **Wiki (`wiki.${DOMAIN_NAME}`):** Mounts `References` read-only. Publicly accessible user guides, life administration, procedures, and personal handbooks.
+*   **Authentication:** `docs.${DOMAIN_NAME}` is protected via Traefik Authelia forward-auth middleware (`authelia`). `wiki.${DOMAIN_NAME}` is public for easy access from any device and friction-free sharing.
 
 ## Setup
 ### Deployment
-I am deployed via Docker Swarm on **Gaia/Olympus**:
+Automated via GitHub Actions CI/CD using centralized `yggdrasil-os` deployment tooling.
+Manual deployment on **Gaia/Olympus**:
 
 ```bash
-# Deploy stack
-./scripts/deploy.sh "muninn" docker-compose.yml
+/tmp/deploy.sh "mimir" docker-compose.yml
 ```
 
 ### Content Editing
 1.  Open Obsidian.
-2.  Navigate to `Atlas/Muninn/`.
-3.  Write.
-4.  The site updates automatically (within minutes).
+2.  Navigate to `Areas/90-Infrastructure/` (for docs) or `References/` (for wiki).
+3.  Write or update notes.
+4.  The sites update automatically via live read-only volume mounts.
 
 ## Directory Structure
-*   `docker-compose.yml`: The Swarm definition.
-*   `quartz.config.ts`: Visual configuration and Plugin settings.
-*   `quartz.layout.ts`: Sidebar and UI layout definition.
+*   `docker-compose.yml`: Swarm service definition for `docs` and `wiki`, Authelia middleware, and volume mounts.
+*   `quartz.config.ts`: Configuration, theme tokens, and ignore patterns (dynamic `PAGE_TITLE` and `BASE_URL`).
+*   `quartz.layout.ts`: Layout components (Explorer, Search, Graph, Table of Contents).
+
+

@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 # Install system dependencies (git is required by quartz)
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN git config --global --add safe.directory "*"
 
 # Clone the Quartz repository (Engine)
 RUN git clone https://github.com/jackyzha0/quartz.git .
