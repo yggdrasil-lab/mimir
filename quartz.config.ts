@@ -8,14 +8,14 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Muninn",
+    pageTitle: process.env.PAGE_TITLE || "Mimir",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
     analytics: null, // Disabled
     locale: "en-US",
-    baseUrl: `wiki.${process.env.DOMAIN_NAME}`,
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    baseUrl: process.env.BASE_URL || `docs.${process.env.DOMAIN_NAME}`,
+    ignorePatterns: ["private", "templates", ".obsidian", ".trash", "**/Historical/**", "**/Tasks - *"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
